@@ -192,6 +192,6 @@ _Empty at birth — implementation runs append findings and deviations here. Exp
 
 ## 10. Ratification
 
-**Status: DRAFT — not ratified**
+**Status: RATIFIED 2026-07-15 (Steve)**
 
-Ratification covers: the §1 scope and non-goals; the §3 decisions including the `smallcoordination` rename and its §3.2/§8 consequences; the §4 phases; the §5 README contract; the $5 envelope; the §7 pre-authorization grants exactly as listed; §8 as documentation only (never autonomous).
+Ratification covers: the §1 scope and non-goals; the §3 decisions including the `smallcoordination` rename and its §3.2/§8 consequences; the §4 phases; the §5 README contract; the $5 envelope; the §7 pre-authorization grants exactly as listed; §8 as documentation only (never autonomous). Amendment folded in before ratification: the §5 install/initial-setup/per-project-setup coverage expansion (commit 40dc847).
