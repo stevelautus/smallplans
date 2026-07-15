@@ -33,7 +33,7 @@ No brief → run the full guided interview as written.
 
 ## Procedure
 
-1. **Verify and orient.** Must be in a stream worktree. Read: the stream's opening ledger entry, the project bindings (`docs/PARALLEL-DEV-WORKFLOW.md`), the relevant product docs, and `~/.claude/smallcoordination/WORKFLOW.md` §3 if the work is refactor-shaped.
+1. **Verify and orient.** Must be in a stream worktree. Read: the stream's opening ledger entry, the project bindings (`docs/PARALLEL-DEV-WORKFLOW.md`), the relevant product docs (whichever the bindings names — e.g. a PRD and the requirements sections in scope), and `~/.claude/smallcoordination/WORKFLOW.md` §3 if the work is refactor-shaped.
 2. **Derive before asking.** Build a draft understanding from what already exists: the user's upfront brief first, then the feature's motivating docs, a quick recon of the affected modules, the bindings, prior plan docs. Open the conversation by presenting it as numbered stated assumptions the user can veto, marking which came from the brief and which were derived. Never ask the user to recite what the artifacts — or their own brief — already say.
 3. **Elicit the decisions — you lead; the user needs no prior knowledge of the charter format.** Ask only what the brief and the artifacts leave open: skip any round the brief already settles; collapse partially covered rounds to targeted gap-filling. Walk the remaining required sections (step 4) in grouped rounds: scope and seams, then phases and reservations, then envelope and pre-authorizations. For each open decision: one line on what's needed and why it matters, a recommended answer with its tradeoffs, then the question. Number the open items (the CONFIRM idiom); use the AskUserQuestion tool for discrete option sets, free conversation otherwise. For refactor-shaped streams, the seam catalog (expand / build / contract split) is the first and heaviest round. Three classes of input:
    - **Derivable** → derived and stated in step 2, not asked.
@@ -44,9 +44,9 @@ No brief → run the full guided interview as written.
    - **Seam plan** (refactor streams) — the expand-slice catalog, each marked trunk-bound. Trunk-bound slices are landed by ATTENDED sessions, not autonomous runs; note that scope-rule amendments to tracked files (e.g. CLAUDE.md out-of-scope lists) are themselves trunk edits and land the same way.
    - **Phase plan with checkboxes** — the progress anchor `/smallplans:stream-work` resumes from. Phases sized so each ends at a natural safe point.
    - **Reserved modules** — narrow: the new modules the stream owns outright. Core shared files are protected by seams plus sync frequency, not reservations.
-   - **Migration expectations** — how many, what they touch; stream-namespace per bindings §3.
+   - **Migration expectations** — how many, what they touch; 9xxx namespace per bindings §3.
    - **Spend envelope** — the app-level LLM budget for implementation runs (walks, rescores), with the metering note from bindings §2.
-   - **Pre-authorizations** — what runs may do without asking: spend to the envelope; rebuild/drop of the stream's own databases (the explicit carve-out from the standing destructive-action rule); minor documented plan deviations. Nothing else.
+   - **Pre-authorizations** — what runs may do without asking: spend to the envelope; rebuild/drop of the stream's own `*_<slug>` DBs (the explicit carve-out from the standing destructive-action rule); minor documented plan deviations. Nothing else.
    - **Hard-stop additions** — any stream-specific stops beyond the standard set.
    - **Follow-ups / queued** — empty at birth; autonomous runs append queued trunk slices here.
    - **Ratification block** — initially `Status: DRAFT — not ratified`. Lists exactly what ratification covers, including any project scope-rule amendments required.

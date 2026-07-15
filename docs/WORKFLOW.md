@@ -1,6 +1,6 @@
 # Parallel Development Workflow — Worktree Streams Beside a Moving Trunk
 
-**Scope: global.** This protocol applies to any project on this machine. Each adopting project documents its own bindings (databases, ports, migration mechanics, setup) in-repo at `docs/PARALLEL-DEV-WORKFLOW.md`. This file owns the protocol; bindings docs own the project specifics; the skills own the procedures. Assumption baked in throughout: all worktrees and all sessions live on **one machine, one HOME** — the smallcoordination ledger directory is the shared bus.
+**Scope: global.** This protocol applies to any project on this machine. Each adopting project documents its own bindings (databases, ports, migration mechanics, setup) in-repo at `docs/PARALLEL-DEV-WORKFLOW.md`. This file owns the protocol; bindings docs own the project specifics; the skills own the procedures. **Human walkthrough with example commands: the walkthrough section of the plugin's `README.md`.** Assumption baked in throughout: all worktrees and all sessions live on **one machine, one HOME** — the smallcoordination ledger directory is the shared bus.
 
 ---
 
@@ -64,7 +64,7 @@ The central place sessions record what other sessions need to know. It is **not*
 - **Location:** `~/.claude/smallcoordination/<project>/`, one file per entry, **append-only**. Never edit a committed entry; a correction is a new entry. No index file (chronological filenames make one unnecessary).
 - **Project key** = the main checkout's directory name. Derive from anywhere, including a worktree:
   `basename "$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")"`
-  Create the directory on first use.
+  (For a checkout at `~/code/myproject`: `myproject`.) Create the directory on first use.
 - **The pertinence test (the only admission rule):** *would a session doing unrelated work need to act differently after this?* If no, the commit message is the record — write nothing. A healthy ledger gets a handful of entries per week, not per session.
 - **Types** (one per entry): `reservation` (claims: module ownership, landing freezes, planned rename waves) · `breaking` (shipped changes others must adapt to) · `convention` (new rules effective immediately, including landed seams) · `heads-up` (lifecycle events, spend, surprises). **`/smallplans:coord-note` owns the operational detail**: full type definitions with examples, the entry format, the filename convention, and what always qualifies.
 - **Reading is a skill too:** `/smallplans:coord-check` at session start reads the ledger and distills standing obligations (freezes, reservations, seams, breaking changes). No git transport, no sync lag, no branch propagation — every entry is visible to every session the moment it's written.
@@ -146,7 +146,7 @@ The priority case: a multi-hour, uninterrupted, maximally autonomous session (of
 
 1. Write the bindings doc at `docs/PARALLEL-DEV-WORKFLOW.md` in the repo, answering §7 with commands, plus the project's migration mechanics (§6) and a stream-opening checklist. Land whatever small enabling patch the DB-isolation answer requires.
 2. Add a short pointer section to the project's `CLAUDE.md` (this protocol + the bindings + the ledger location).
-3. The global rule file (`~/.claude/rules/parallel-dev.md`) handles session wiring everywhere, and the lifecycle skills (`/smallplans:stream-open`, `/smallplans:stream-work`) are likewise global — they read the project's bindings doc for the specifics. Beyond the bindings doc and its enabling patch, projects need nothing.
+3. The plugin's gate hook handles session wiring everywhere, and the lifecycle skills (`/smallplans:stream-open`, `/smallplans:stream-work`) are likewise global — they read the project's bindings doc for the specifics. Beyond the bindings doc and its enabling patch, projects need nothing.
 
 Adoption is deliberately doc-driven rather than a skill: it is a once-per-project design exercise (answering §7 against the project's real infrastructure), not a repeatable procedure. Skill-ify only if a second adoption proves clunky.
 

@@ -29,7 +29,7 @@ This is the trunk-session citizen check; stream worktrees get the deeper version
    ```bash
    cd ~/.claude/smallcoordination/$PROJ && for f in $( (ls *.md | tail -n 8; ls *_reservation_*.md 2>/dev/null) | sort -u ); do echo "=== $f ==="; cat "$f"; done
    ```
-   Read nothing else: WORKFLOW.md, protocol docs, charter docs, and repo files are out of scope for this skill.
+   Read nothing else: `WORKFLOW.md`, `README.md`, `TEMPLATE.md`, charter docs, and repo files are out of scope for this skill.
 
 3. Release-closure for reservations: a reservation may have been released by an entry that is no longer among the 8 newest — for EACH reservation found, grep the ledger for entries that reference its timestamp and read any hits not already in your set:
    ```bash
