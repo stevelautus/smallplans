@@ -7,14 +7,19 @@
 # Semantics mirror ~/.claude/rules/parallel-dev.md but inject only when relevant
 # (this conditionality is the improvement over the always-loaded rules file).
 
-set -e
+# No `set -e`: this hook must exit 0 on every path (a nonzero exit breaks the session),
+# so failures are tolerated individually. Mirrors ~/.claude/context-kit/compact-reorient.sh.
 
 INPUT=$(cat)
 CWD=$(printf '%s' "$INPUT" | jq -r '.cwd // empty' 2>/dev/null)
 [ -z "$CWD" ] && CWD="$PWD"
 
-# Derive project key exactly as the rules file does
-PROJ=$(cd "$CWD" 2>/dev/null && git rev-parse --path-format=absolute --git-common-dir 2>/dev/null | xargs dirname | xargs basename) 2>/dev/null || true
+# Derive project key exactly as the rules file does: basename "$(dirname "$(git ...)")".
+# Not `xargs dirname | xargs basename` — xargs splits on whitespace, so a checkout path
+# containing a space would silently yield the wrong key and skip the gate entirely.
+PROJ=""
+GIT_COMMON=$(cd "$CWD" 2>/dev/null && git rev-parse --path-format=absolute --git-common-dir 2>/dev/null)
+[ -n "$GIT_COMMON" ] && PROJ=$(basename "$(dirname "$GIT_COMMON")")
 
 INJECT=""
 
