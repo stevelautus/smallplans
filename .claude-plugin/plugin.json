@@ -1,0 +1,12 @@
+{
+  "name": "smallplans",
+  "version": "0.1.0",
+  "description": "Plan → ratify → autonomous build. Nine skills for planning features and executing them in long autonomous runs, on trunk or in coordinated worktree streams.",
+  "author": {
+    "name": "stevelautus"
+  },
+  "homepage": "https://github.com/stevelautus/smallplans",
+  "repository": "https://github.com/stevelautus/smallplans",
+  "license": "Apache-2.0",
+  "keywords": ["planning", "workflow", "autonomous", "worktree", "coordination"]
+}
