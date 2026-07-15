@@ -12,42 +12,44 @@ A Claude Code plugin that packages planning-and-execution for feature developmen
 
 ## Install
 
-### From the plugin marketplace (recommended)
+This repo is both the plugin and its own marketplace, so installing is two steps: register the
+marketplace, then enable the plugin from it.
+
+### From GitHub (recommended)
 
 ```bash
-claude plugin install stevelautus/smallplans
+# 1. Register this repo as a marketplace
+claude plugin marketplace add stevelautus/smallplans
+
+# 2. Enable the plugin from it
+claude plugin install smallplans@smallplans
 ```
 
-Then enable it in your project or globally:
+`install` takes `--scope user` (everywhere), `--scope project` (this repo, committed to
+`.claude/settings.json` and shared with anyone who clones it), or `--scope local` (this repo, kept out
+of git in `.claude/settings.local.json`). It defaults to auto-detect.
+
+**Recommended: enable per-project, not user-wide.** This plugin is opinionated — it expects a plan-doc
+culture, and every session in every repo would otherwise carry its skills. Turn it on where that
+culture applies:
 
 ```bash
-# Per-project (recommended where plan-doc culture applies)
 cd your-repo
-claude settings --add enabledPlugins.smallplans@smallplans true
-
-# Or user-wide
-claude settings --scope=user --add enabledPlugins.smallplans@smallplans true
+claude plugin install smallplans@smallplans --scope project
 ```
 
 ### From a local checkout
 
-Clone this repo, then:
+Clone the repo, then point a marketplace at the clone:
 
 ```bash
-# Register the checkout as a directory-source marketplace
-cd ~/.claude/settings
-# Edit settings.json or settings.local.json:
-# "extraKnownMarketplaces": {
-#   "smallplans": {
-#     "source": {
-#       "source": "directory",
-#       "path": "/path/to/smallplans-clone"
-#     }
-#   }
-# }
-
-# Then enable the plugin per-project or user-wide (see above)
+git clone https://github.com/stevelautus/smallplans.git ~/src/smallplans
+claude plugin marketplace add ~/src/smallplans --scope local
+claude plugin install smallplans@smallplans --scope local
 ```
+
+Changes to the checkout are picked up on the next session start — plugin components snapshot when a
+session begins, so restart a session to see edits.
 
 ### Update
 
@@ -94,19 +96,28 @@ All commands are invoked as `/smallplans:<name>`.
 The plugin registers **one** automatic behavior (a SessionStart hook):
 
 **On every session start:**
-1. Refreshes `~/.claude/smallcoordination/WORKFLOW.md` from the bundled copy (if `~/.claude/smallcoordination/` already exists)
+1. Refreshes `~/.claude/smallcoordination/WORKFLOW.md` from the bundled copy — **only if `~/.claude/smallcoordination/` already exists.** If you've never written a ledger entry, the hook writes nothing to your HOME at all.
 2. Checks `~/.claude/smallcoordination/<project>/` for the current project — if entries exist, injects an obligation to run `/smallplans:coord-check` and reminds you of the merge-only rule (sync = merge, never rebase or force-push a branch another session has seen)
+
+**It is silent unless you're actually coordinating.** No ledger directory, no entries for this project,
+or not a git repo at all → the hook injects nothing and costs zero context. That's the common case, and
+it's the whole point of doing this as a conditional hook rather than an always-loaded rules file.
 
 **What gets written to HOME:**
 - `~/.claude/smallcoordination/` — the machine-global coordination ledger (one file per entry, created on first use)
 - `~/.claude/smallcoordination/WORKFLOW.md` — auto-materialized stable copy of the protocol docs (refreshed at session start if ledger dir exists)
 
-**This data survives uninstall.** To remove everything:
-```bash
-# Disable the plugin
-claude settings --scope=user --remove enabledPlugins.smallplans@smallplans
+**This data survives uninstall** — deliberately. The ledger is a record of what your sessions told each
+other; removing the plugin shouldn't destroy it. To remove everything:
 
-# Delete the ledger (optional; entries are permanent machine metadata)
+```bash
+# Turn the plugin off (keeps it installed)
+claude plugin disable smallplans@smallplans
+
+# Or remove it entirely
+claude plugin uninstall smallplans@smallplans
+
+# The ledger is left behind. Delete it yourself if you want it gone:
 rm -rf ~/.claude/smallcoordination/
 ```
 
@@ -273,13 +284,12 @@ See [`docs/WORKFLOW.md`](docs/WORKFLOW.md) for the protocol's rationale and cont
 
 ## Troubleshooting
 
-### `coords-check` says "no project key derived" or "ledger not found"
+### `coord-check` says "No parallel workstreams; nothing applies."
 
-**Likely cause:** you're not in a git repo, or the project hasn't created any ledger entries yet.
-
-**Fix:** 
-- For non-git cwd: switch to a git repo.
-- For first stream setup: the first `/smallplans:stream-open` or `/smallplans:coord-note` creates the ledger directory.
+**This is normal, not an error** — it means nothing is coordinating yet. The ledger directory is created
+on demand by the first `/smallplans:coord-note` or `/smallplans:stream-open`; until then there is
+nothing to report. You'll also see this outside a git repo, since the project key is derived from the
+git checkout.
 
 ### Conflicting ledger entries (two sessions wrote at once)
 
@@ -323,6 +333,3 @@ The ledger is intentionally left behind (permanent machine metadata); you decide
 
 Apache License 2.0 — see [`LICENSE`](LICENSE) for terms.
 
----
-
-**Questions or issues?** See the plugin README or the protocol docs at `docs/WORKFLOW.md`.
