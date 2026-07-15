@@ -85,7 +85,12 @@ All commands are invoked as `/smallplans:<name>`.
 | Command | Purpose | When to use |
 |---------|---------|-----------|
 | `/smallplans:coord-check` | Read standing obligations from the ledger | At session start when the project has active streams or breaking changes |
+
 | `/smallplans:coord-note` | Write a ledger entry | After shipping anything others need to know about (seams, breaking changes, freezes) |
+
+`coord-check` is deliberately cheap: it runs in a forked context and returns only its obligations
+report, so reading the ledger costs your session almost nothing even when you run it at every session
+start.
 
 **Start here:**
 - **Trunk feature:** `/smallplans:plan-feature`

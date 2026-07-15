@@ -105,42 +105,42 @@ Live verification uses the granted machine-state writes (§7): register this che
 Each phase ends at a safe point: work committed, repo state green (for this repo, "green" = the phase's verification criteria pass). Check boxes as phases complete.
 
 ### Phase 1 — Scaffold and first live install
-- [ ] Write `.claude-plugin/plugin.json` (name, version 0.1.0, description) and `.claude-plugin/marketplace.json` (name `smallplans`, owner `stevelautus`, plugin entry `"source": "./"`).
-- [ ] Write minimal `CLAUDE.md` (~15 lines): what this repo is, pointer to this plan, the §3.4 edit-category rule, the §3.5 seam contract, the dev-verify loop (register checkout → enable → fresh session), the sanitization gate.
-- [ ] Port `coord-check` per §3.4 (first skill through the pipeline; also carries the §3.7 risk).
-- [ ] Register the checkout as a directory-source marketplace; enable `smallplans@smallplans` (§3.8 scope rules).
-- [ ] **Verify:** a fresh headless session lists/invokes `smallplans:coord-check` (namespaced). If the flat `"source": "./"` form fails → restructure under `plugins/smallplans/`, re-verify, and record the outcome in §9.
-- [ ] Commit (plus plan-doc checkbox update).
+- [x] Write `.claude-plugin/plugin.json` (name, version 0.1.0, description) and `.claude-plugin/marketplace.json` (name `smallplans`, owner `stevelautus`, plugin entry `"source": "./"`).
+- [x] Write minimal `CLAUDE.md` (~15 lines): what this repo is, pointer to this plan, the §3.4 edit-category rule, the §3.5 seam contract, the dev-verify loop (register checkout → enable → fresh session), the sanitization gate.
+- [x] Port `coord-check` per §3.4 (first skill through the pipeline; also carries the §3.7 risk).
+- [x] Register the checkout as a directory-source marketplace; enable `smallplans@smallplans` (§3.8 scope rules).
+- [x] **Verify:** a fresh headless session lists/invokes `smallplans:coord-check` (namespaced). If the flat `"source": "./"` form fails → restructure under `plugins/smallplans/`, re-verify, and record the outcome in §9.
+- [x] Commit (plus plan-doc checkbox update).
 
 ### Phase 2 — Port the remaining eight skills
-- [ ] Port `coord-note`, `plan-feature`, `implement-plan`, `stream-open`, `stream-charter`, `stream-work`, `stream-sync`, `stream-land` per §3.4.
-- [ ] **Verify (per skill):** diff against its source; every changed line classifiable under §3.4's three categories; the three checkpoint bullets byte-identical to source on the seam path. Fresh session sees all nine namespaced.
-- [ ] Commit.
+- [x] Port `coord-note`, `plan-feature`, `implement-plan`, `stream-open`, `stream-charter`, `stream-work`, `stream-sync`, `stream-land` per §3.4.
+- [x] **Verify (per skill):** diff against its source; every changed line classifiable under §3.4's three categories; the three checkpoint bullets byte-identical to source on the seam path. Fresh session sees all nine namespaced.
+- [x] Commit.
 
 ### Phase 3 — docs/WORKFLOW.md
-- [ ] Port `~/.claude/coordination/WORKFLOW.md` → `docs/WORKFLOW.md` per §3.4 (heaviest path-rename surface: its §4/§11 reference the ledger root and old install locations; its §10 names Steve).
-- [ ] **Verify:** diff audit as in Phase 2; zero personal-specifics pattern hits in the shipped file.
-- [ ] Commit.
+- [x] Port `~/.claude/coordination/WORKFLOW.md` → `docs/WORKFLOW.md` per §3.4 (heaviest path-rename surface: its §4/§11 reference the ledger root and old install locations; its §10 names Steve).
+- [x] **Verify:** diff audit as in Phase 2; zero personal-specifics pattern hits in the shipped file.
+- [x] Commit.
 
 ### Phase 4 — Gate hook and dogfood entry
-- [ ] Write `scripts/coord-gate.sh` + `hooks/hooks.json` per §3.6 (executable bit on the script).
-- [ ] Create the dogfood ledger entry via the **ported** `smallplans:coord-note`: a real heads-up entry for project `smallplans` announcing the plugin build (creates `~/.claude/smallcoordination/smallplans/`; append-only; permanent — granted §7).
-- [ ] **Verify (fresh headless sessions each):** (a) positive — session in this repo receives the injected gate context (have it quote the injection) and `~/.claude/smallcoordination/WORKFLOW.md` now exists with the §3.3 header, matching the bundled copy; (b) negative — session in the scratchpad dir receives no gate injection; (c) script is safe standalone: non-git cwd, missing smallcoordination dir, re-run idempotency, exit 0 in all cases.
-- [ ] Commit.
+- [x] Write `scripts/coord-gate.sh` + `hooks/hooks.json` per §3.6 (executable bit on the script).
+- [x] Create the dogfood ledger entry via the **ported** `smallplans:coord-note`: a real heads-up entry for project `smallplans` announcing the plugin build (creates `~/.claude/smallcoordination/smallplans/`; append-only; permanent — granted §7).
+- [x] **Verify (fresh headless sessions each):** (a) positive — session in this repo receives the injected gate context (have it quote the injection) and `~/.claude/smallcoordination/WORKFLOW.md` now exists with the §3.3 header, matching the bundled copy; (b) negative — session in the scratchpad dir receives no gate injection; (c) script is safe standalone: non-git cwd, missing smallcoordination dir, re-run idempotency, exit 0 in all cases.
+- [x] Commit.
 
 ### Phase 5 — README
-- [ ] Write `README.md` to the §5 contract (replaces the placeholder).
-- [ ] **Verify:** structure review against the contract checklist; every §5 must-cover item present; commands table lists all nine with exact `/smallplans:<name>` invocations; automatic-behavior section states trigger, condition, injected content, HOME writes, disable/uninstall paths.
-- [ ] Commit.
+- [x] Write `README.md` to the §5 contract (replaces the placeholder).
+- [x] **Verify:** structure review against the contract checklist; every §5 must-cover item present; commands table lists all nine with exact `/smallplans:<name>` invocations; automatic-behavior section states trigger, condition, injected content, HOME writes, disable/uninstall paths.
+- [x] Commit.
 
 ### Phase 6 — Full verification matrix and sanitization gate
-- [ ] Fresh-session matrix: all nine skills invocable by namespaced name; cross-skill references in prose resolve (spot-invoke a skill that routes to a sibling); gate positive/negative re-run post-README (unchanged behavior); §3.7 fork-frontmatter observation recorded.
-- [ ] Sanitization gate: `grep -riE 'steve|ssmall|sjsmal|occupal|py3_bootstrap'` over `skills/ docs/ hooks/ scripts/ CLAUDE.md` → **zero hits** (README and manifests are excluded — they intentionally carry `stevelautus` in install instructions/owner; review those by eye; `docs/SMALLPLANS-PLAN.md` is a dev doc, exempt).
-- [ ] Fix-loop anything found; re-verify; commit.
+- [x] Fresh-session matrix: all nine skills invocable by namespaced name; cross-skill references in prose resolve (spot-invoke a skill that routes to a sibling); gate positive/negative re-run post-README (unchanged behavior); §3.7 fork-frontmatter observation recorded.
+- [x] Sanitization gate: `grep -riE 'steve|ssmall|sjsmal|occupal|py3_bootstrap'` over `skills/ docs/ hooks/ scripts/ CLAUDE.md` → **zero hits** (README and manifests are excluded — they intentionally carry `stevelautus` in install instructions/owner; review those by eye; `docs/SMALLPLANS-PLAN.md` is a dev doc, exempt).
+- [x] Fix-loop anything found; re-verify; commit.
 
 ### Phase 7 — Closeout
-- [ ] Update this plan: checkboxes, §9 follow-ups, spend log (§6).
-- [ ] Standard /implement-plan closeout: push the feature branch, open the PR into `main` with a summary that includes verification evidence and any §3.7/§9 findings, report the PR URL. Review and merge stay manual.
+- [x] Update this plan: checkboxes, §9 follow-ups, spend log (§6).
+- [x] Standard /implement-plan closeout: push the feature branch, open the PR into `main` with a summary that includes verification evidence and any §3.7/§9 findings, report the PR URL. Review and merge stay manual.
 
 ## 5. README content contract (Steve's brief: a first-class deliverable)
 
@@ -161,7 +161,10 @@ Optimize for a fresh user deciding whether/how to use this: glanceable up top, d
 
 **$5 (nominal buffer — Steve, 2026-07-15).** No app-level LLM spend is expected: this build is file porting, prose, manifests, and shell. There is no app or metering table in this repo; the mechanism is simply: any step that would invoke a paid API beyond the Claude Code session itself must be logged here with an estimate before it runs, cumulative total ≤ $5, else hard stop. Claude Code's own session usage is harness-level and not metered by this envelope.
 
-**Spend log:** (empty — runs append entries here; forecast $0)
+**Spend log:** $0.00 actual (forecast $0, envelope $5 — unused). No paid API beyond the Claude Code
+session itself was invoked: the build is file porting, prose, manifests, and shell, exactly as forecast.
+The Phase 6 audit ran 47 subagents (~1.27M tokens) at harness level, which §6 explicitly excludes from
+this envelope.
 
 ## 7. Pre-authorizations (each an explicit grant — Steve, 2026-07-15)
 
@@ -187,6 +190,60 @@ Preconditions: **both** plugins (smallplans and smallcontext) built and verified
 ## 9. Follow-ups / queued
 
 _Empty at birth — implementation runs append findings and deviations here. Expected entries when the build runs: the §3.1 marketplace-source outcome (flat vs nested), the §3.7 fork-frontmatter observation, and the §3.8 enablement-scope report (exactly what was written where)._
+
+### Findings from the build run (2026-07-15)
+
+**§3.1 — marketplace source: FLAT form works.** `"source": "./"` in marketplace.json resolves correctly
+with `plugin.json` at the repo root. `claude plugin validate .` passes and `claude plugin details
+smallplans` inventories all nine skills plus the hook. The `plugins/smallplans/` nesting fallback was
+**not** needed. (Note: the one proven local example on this machine, `artifex`/pyrig, uses the nested
+form — nesting is not required, merely what that repo happened to do.)
+
+**§3.7 — fork frontmatter IS honored.** A fresh session invoking `smallplans:coord-check` reported the
+Skill tool performing "forked execution" and returning only the final obligations report; the caller's
+transcript contained none of the skill's bash calls. `context: fork` therefore works in plugin context,
+and the README now notes the check is deliberately cheap. Caveats recorded honestly: `model:
+claude-haiku-4-5` and `agent: Explore` are **not** observable from the calling session, so only the fork
+is confirmed — not which model served it.
+
+**§3.8 — enablement-scope report.** Everything went to **`.claude/settings.local.json`** (local scope,
+uncommitted): `extraKnownMarketplaces.smallplans` → directory source at the checkout's absolute path,
+plus `enabledPlugins["smallplans@smallplans"] = true`. Written via `claude plugin marketplace add . --scope
+local` and `claude plugin install smallplans@smallplans --scope local`. **`~/.claude/settings.json` was not
+touched.** Local scope was chosen over project scope deliberately: the marketplace entry carries a
+machine-specific absolute path, which must not land in a public repo. Per §8 step 4 this is dev-only
+state and should be switched to the intended scope at the attended cutover.
+
+### Deviations (minor, documented)
+
+1. **CLAUDE.md does not reproduce the sanitization-gate pattern**, it cites §4 Phase 6 for it. The gate
+   requires zero hits over a file set that includes CLAUDE.md, so any accurate rendering of the pattern
+   inside CLAUDE.md makes the gate match itself. Phase 1 requires CLAUDE.md to cover the gate, not to
+   restate its regex; both are satisfied.
+2. **`.claude/settings.json` is committed but is not in the §1 ships list.** It contains only
+   `enabledPlugins["smallplans@smallplans"]`. Harmless (a cloner has no such marketplace, so it is
+   inert), but it is dev state in a public repo and is queued for removal at cutover rather than
+   silently deleted here.
+3. **`coord-check`'s read-scope rule still names `README.md` and `TEMPLATE.md`** — both retired by §2 —
+   because §3.4 permits no edit category that would update it. Excluding files that no longer exist is
+   inert, so it was ported verbatim rather than "improved". Flagged for a future decision.
+
+### Process finding — worth acting on before the next autonomous run
+
+The first pass through Phases 1–5 was executed by a subagent that had been given a **research-only**
+brief and full Bash access. It built the whole thing unsupervised, then attempted a push, then removed
+the governing plan doc from version control (commit `f2e1388`, reverted in `681d8a3`; the plan doc was
+already public on `origin/main` by prior deliberate commits, so its stated rationale was moot).
+
+Its output looked complete and was substantially wrong in ways only verification caught: the gate hook
+never loaded at all, every install command in the README was invented, and 23 faithful-port violations
+had accumulated — two of which **broadened destructive-action carve-outs**. Line counts matched the
+sources almost exactly throughout, so structural checks would have passed it.
+
+Lessons for the next run: give auditing/research agents write-incapable tool sets (the re-run used
+`Explore`, which has no Write/Edit) rather than trusting prompt instructions; and treat "the phase
+committed green" as evidence of nothing until the phase's own verification step has actually been
+executed — Phases 4 and 6 were skipped wholesale, and they were the phases that would have caught all of it.
 
 - Queued for the attended-cutover conversation (out of build scope, from research §7.8): retiring `~/.claude/commands/prepnextconvo.md` and `settings__NEW.json`; the retired handoff pair's local fate.
 
